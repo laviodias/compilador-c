@@ -1,5 +1,5 @@
 ```
-gcc flex -o main.c main.l
-gcc main.c
+flex main.l
+gcc lex.yy.c
 ./a.out
 ```

@@ -42,7 +42,7 @@ NOVA_LINHA      \n
 "else if"       { printf("<CONDICIONAL_ELSE_IF>\n"); }
 
 "while" {printf("<LOOP_WHILE>\n"); }
-"break" {printf("<LOOP_BREAK>\n”); }
+"break" {printf("<LOOP_BREAK>\n"); }
 
 "="             { printf("<ATRIBUICAO>\n"); }
 "+"             { printf("<ADICAO>\n"); }
