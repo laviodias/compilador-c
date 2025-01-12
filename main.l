@@ -34,6 +34,8 @@ NOVA_LINHA      \n
 
 "int"           { printf("<TIPO_INTEIRO>\n"); }
 "float"         { printf("<TIPO_FLUTUANTE>\n"); }
+"void"          { printf("<TIPO_VOID>\n"); }
+"return"        { printf("<RETORNO_FUNCAO>\n"); }
 
 "if"            { printf("<CONDICIONAL_IF>\n"); }
 "else"          { printf("<CONDICIONAL_ELSE>\n"); }
