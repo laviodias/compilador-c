@@ -53,6 +53,8 @@ NOVA_LINHA      \n
 ")"             { printf("<PARENTESE_DIR>\n"); }
 "{"             { printf("<CHAVE_ESQ>\n"); }
 "}"             { printf("<CHAVE_DIR>\n"); }
+"["             { printf("<COLCHETE_ESQ>\n"); }
+"]"             { printf("<COLCHETE_DIR>\n"); }
 ";"             { printf("<PONTO_VIRGULA>\n"); }
 ","             { printf("<VIRGULA>\n"); }
 "."             { printf("<PONTO>\n"); }
