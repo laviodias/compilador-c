@@ -75,7 +75,8 @@ extern int yydebug;
     COMMA = 276,                   /* COMMA  */
     ID = 277,                      /* ID  */
     RELOP = 278,                   /* RELOP  */
-    ERROR = 279                    /* ERROR  */
+    ARRAY_ID = 279,                /* ARRAY_ID  */
+    ERROR = 280                    /* ERROR  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -90,7 +91,7 @@ union YYSTYPE
     char* strId;
     int num;
 
-#line 94 "parser.tab.h"
+#line 95 "parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

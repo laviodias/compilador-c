@@ -6,6 +6,10 @@
 
 [0-9]+      { yylval.num = atoi(yytext); return NUM; }
 [ \t\n]     { /* Ignora espaços em branco */ }
+[a-zA-Z_][a-zA-Z0-9_]*\[[0-9]+\] {
+    yylval.strId = strdup(yytext);
+    return ARRAY_ID;
+}
 "int"       { return INT; }
 "float"     { return FLOAT; }
 "void"      { return VOID; }

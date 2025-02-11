@@ -18,6 +18,7 @@ int yylex(void);
 %token ASSIGN LPAREN RPAREN LBRACE RBRACE SEMICOLON COMMA
 %token <strId> ID
 %token <relop> RELOP
+%token <strId> ARRAY_ID
 %token ERROR
 
 %start program
@@ -34,12 +35,12 @@ global_list:
     ;
 
 global:
-    decl_or_func
+      decl_or_func
     | function_call SEMICOLON { printf("global: function_call\n"); }
     | jump_structure { printf("global: jump_structure\n"); }
+    | while_structure { printf("global: while_structure\n"); }
     ;
 
-/* Fatoração: após "type ID" decide se é declaração ou função */
 decl_or_func:
     type ID decl_or_func_tail
     ;
@@ -52,8 +53,6 @@ decl_or_func_tail:
     | LPAREN parameter_list RPAREN context_bloc 
           { printf("FUNCTION DECLARATION\n"); }
     ;
-
-/* Reaproveita as regras já existentes */
 
 type:
     INT { printf("TYPE: INT\n"); }
@@ -138,19 +137,26 @@ bloc_statement_list:
     ;
 
 bloc_statement:
-    decl_or_func    { printf("bloc_statement (declaration or function)\n"); }
+      decl_or_func    { printf("bloc_statement (declaration or function)\n"); }
     | attribution   { printf("bloc_statement (attribution)\n"); }
     | if_structure  { printf("bloc_statement (if)\n"); }
+    | while_structure { printf("bloc_statement (while)\n"); }
     | return_statement { printf("bloc_statement (return)\n"); }
+    | function_call SEMICOLON { printf("bloc_statement (function_call)\n"); }  /* Novo! */
     ;
 
 attribution:
-    ID ASSIGN expr SEMICOLON { printf("ATTRIBUTION\n"); }
+      ID ASSIGN expr SEMICOLON { printf("ATTRIBUTION\n"); }
+    | ARRAY_ID ASSIGN expr SEMICOLON { printf("ATTRIBUTION\n"); }
     ;
 
 return_statement:
-    RETURN expr SEMICOLON { printf("RETURN STATEMENT\n"); }
+      RETURN expr SEMICOLON { printf("RETURN STATEMENT\n"); }
     | RETURN SEMICOLON { printf("RETURN STATEMENT\n"); }
+    ;
+
+while_structure:
+    WHILE condition_bloc context_bloc { printf("WHILE_STATEMENT\n"); }
     ;
 
 %%
