@@ -42,7 +42,12 @@ global:
     ;
 
 decl_or_func:
-    type ID decl_or_func_tail
+    type id_decl decl_or_func_tail
+    ;
+
+id_decl:
+      ID         { printf("id: %s\n", $1); }
+    | ARRAY_ID   { printf("array id: %s\n", $1); }
     ;
 
 decl_or_func_tail:
@@ -111,7 +116,8 @@ expression:
     ;
 
 print_id:
-    ID { printf("expr = ID: %s\n", $1); }
+      ID         { printf("expr = ID: %s\n", $1); }
+    | ARRAY_ID   { printf("expr = ARRAY_ID: %s\n", $1); }
     ;
 
 print_num:
@@ -142,7 +148,7 @@ bloc_statement:
     | if_structure  { printf("bloc_statement (if)\n"); }
     | while_structure { printf("bloc_statement (while)\n"); }
     | return_statement { printf("bloc_statement (return)\n"); }
-    | function_call SEMICOLON { printf("bloc_statement (function_call)\n"); }  /* Novo! */
+    | function_call SEMICOLON { printf("bloc_statement (function_call)\n"); }
     ;
 
 attribution:

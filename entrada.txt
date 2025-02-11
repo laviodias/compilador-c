@@ -1,5 +1,1 @@
-int teste(int a, int b) {
-    int x = 2;
-    return x;
-}
-teste(5, 8);
+int arr[10];
