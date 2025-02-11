@@ -41,6 +41,7 @@ prog_statement_list:
 prog_statement:
     attribution { printf("\n\t prog_statement\n"); }
     | declaration { printf("\n\t prog_statement\n"); }
+    | declaration_with_attribution { printf("\n\t prog_statement\n"); }
     | jump_structure { printf("\n\t prog_statement\n"); }
 
 bloc_statement_list:
@@ -50,6 +51,7 @@ bloc_statement_list:
 bloc_statement:
     attribution { printf("\n\t\t\tbloc_statement\n"); }
     | declaration { printf("\n\t\t\tbloc_statement\n"); }
+    | declaration_with_attribution { printf("\n\t\t\tbloc_statement\n"); }
     | if_structure { printf("\n\t\t\tbloc_statement\n"); }
 
 context_bloc:
@@ -61,6 +63,9 @@ attribution:
 declaration:
     INT ID SEMICOLON { printf("\n\t \t \t    INT  ID  SEMICOLON \n \t \t \t   DECLARATION: \n"); }
     | FLOAT ID SEMICOLON { printf("\n\t \t \t    FLOAT  ID  SEMICOLON \n \t \t \t   DECLARATION: \n"); }
+
+declaration_with_attribution:
+    INT ID ASSIGN expr SEMICOLON { printf("\n\t \t \t    INT  ID  ASSIGN  expression SEMICOLON \n \t \t \t   DECLARATION_WITH_ATTRIBUTION: \n"); }
 
 
 condition_bloc:
