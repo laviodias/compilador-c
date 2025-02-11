@@ -1,5 +1,6 @@
 ```
-flex main.l
-gcc lex.yy.c
-./a.out
+bison -d parser.y
+flex scanner.l
+gcc parser.tab.c lex.yy.c -o exe
+./exe < entrada.txt
 ```
