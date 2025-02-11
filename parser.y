@@ -2,12 +2,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int indent = 0;  // Nível de indentação global
+int indent = 0;
 
 // Função para imprimir espaços conforme o nível atual
 void print_indent() {
     for (int i = 0; i < indent; i++) {
-        printf("  ");  // Dois espaços por nível (ajuste se desejar)
+        printf("  ");
     }
 }
 
