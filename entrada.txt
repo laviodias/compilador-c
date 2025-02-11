@@ -1,6 +1,7 @@
 int test(int a, int b) {
     int x = 2;
     int arr[10];
+    float h = 5.19;
     arr[3] = a + b;
     if (a > b) {
         x = x + 1;
