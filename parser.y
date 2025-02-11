@@ -67,7 +67,7 @@ decl_or_func_tail:
           { print_indent(); printf("DECLARATION\n"); }
     | ASSIGN expr SEMICOLON 
           { print_indent(); printf("DECLARATION WITH ATTRIBUTION\n"); }
-    | LPAREN parameter_list RPAREN context_bloc 
+    | LPAREN parameter_list RPAREN context_block 
           { print_indent(); printf("FUNCTION DECLARATION\n"); }
     ;
 
@@ -104,14 +104,14 @@ jump_structure:
     ;
 
 if_structure:
-    IF condition_bloc context_bloc { print_indent(); printf("IF STATEMENT\n"); }
+    IF condition_block context_block { print_indent(); printf("IF STATEMENT\n"); }
     ;
 
 else_structure:
-    ELSE context_bloc { print_indent(); printf("ELSE STATEMENT\n"); }
+    ELSE context_block { print_indent(); printf("ELSE STATEMENT\n"); }
     ;
 
-condition_bloc:
+condition_block:
     LPAREN expression print_relop expression RPAREN { print_indent(); printf("IF CONDITION\n"); }
     ;
 
@@ -147,27 +147,27 @@ print_float:
     FLOAT_NUM { print_indent(); printf("expr = FLOAT_NUM: %.2f\n", $1); }
     ;
 
-context_bloc:
-    LBRACE { print_indent(); printf("{\n"); indent++; } bloc_statement_list_opt RBRACE { indent--; print_indent(); printf("}\n"); }
+context_block:
+    LBRACE { print_indent(); printf("{\n"); indent++; } block_statement_list_opt RBRACE { indent--; print_indent(); printf("}\n"); }
     ;
 
-bloc_statement_list_opt:
+block_statement_list_opt:
       /* empty */
-    | bloc_statement_list
+    | block_statement_list
     ;
 
-bloc_statement_list:
-      bloc_statement
-    | bloc_statement_list bloc_statement
+block_statement_list:
+      block_statement
+    | block_statement_list block_statement
     ;
 
-bloc_statement:
-      decl_or_func    { print_indent(); printf("bloc_statement (declaration or function)\n"); }
-    | attribution     { print_indent(); printf("bloc_statement (attribution)\n"); }
-    | jump_structure  { print_indent(); printf("bloc_statement (jump)\n"); }
-    | while_structure { print_indent(); printf("bloc_statement (while)\n"); }
-    | return_statement { print_indent(); printf("bloc_statement (return)\n"); }
-    | function_call SEMICOLON { print_indent(); printf("bloc_statement (function_call)\n"); }
+block_statement:
+      decl_or_func    { print_indent(); printf("block_statement (declaration or function)\n"); }
+    | attribution     { print_indent(); printf("block_statement (attribution)\n"); }
+    | jump_structure  { print_indent(); printf("block_statement (jump)\n"); }
+    | while_structure { print_indent(); printf("block_statement (while)\n"); }
+    | return_statement { print_indent(); printf("block_statement (return)\n"); }
+    | function_call SEMICOLON { print_indent(); printf("block_statement (function_call)\n"); }
     ;
 
 attribution:
@@ -181,7 +181,7 @@ return_statement:
     ;
 
 while_structure:
-    WHILE condition_bloc context_bloc { print_indent(); printf("WHILE_STATEMENT\n"); }
+    WHILE condition_block context_block { print_indent(); printf("WHILE_STATEMENT\n"); }
     ;
 
 %%
