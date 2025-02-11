@@ -1,7 +1,6 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
-
 void yyerror(const char *s);
 int yylex(void);
 %}
@@ -11,101 +10,153 @@ int yylex(void);
     char* strId;
     int num;
 }
+
 %token <num> NUM
-
-%left PLUS MINUS    
+%left PLUS MINUS
 %left MULT DIV
-
-%token INT FLOAT IF ELSE WHILE
-%token ASSIGN LPAREN RPAREN LBRACE RBRACE SEMICOLON
+%token INT FLOAT VOID IF ELSE WHILE RETURN
+%token ASSIGN LPAREN RPAREN LBRACE RBRACE SEMICOLON COMMA
 %token <strId> ID
 %token <relop> RELOP
 %token ERROR
 
-
 %start program
 
-%type <num> print_num
-%type <relop> print_relop
-%type <strId> print_id
-
 %%
+
 program:
-    prog_statement_list { printf("\nprogram\n"); }
+    global_list { printf("program\n"); }
     ;
 
-prog_statement_list:
-    prog_statement { printf("   prog_statement_list \n"); }
-    | prog_statement_list prog_statement { printf("   prog_statement_list \n"); }
+global_list:
+    global { printf("global_list\n"); }
+    | global_list global { printf("global_list\n"); }
+    ;
 
-prog_statement:
-    attribution { printf("\n\t prog_statement\n"); }
-    | declaration { printf("\n\t prog_statement\n"); }
-    | declaration_with_attribution { printf("\n\t prog_statement\n"); }
-    | jump_structure { printf("\n\t prog_statement\n"); }
+global:
+    decl_or_func
+    | function_call SEMICOLON { printf("global: function_call\n"); }
+    | jump_structure { printf("global: jump_structure\n"); }
+    ;
 
-bloc_statement_list:
-    bloc_statement { printf("\t\t      bloc_statement_list \n\n"); }
-    | bloc_statement_list bloc_statement { printf("\t\t       bloc_statement_list \n\n"); }
+/* Fatoração: após "type ID" decide se é declaração ou função */
+decl_or_func:
+    type ID decl_or_func_tail
+    ;
 
-bloc_statement:
-    attribution { printf("\n\t\t\tbloc_statement\n"); }
-    | declaration { printf("\n\t\t\tbloc_statement\n"); }
-    | declaration_with_attribution { printf("\n\t\t\tbloc_statement\n"); }
-    | if_structure { printf("\n\t\t\tbloc_statement\n"); }
+decl_or_func_tail:
+      SEMICOLON 
+          { printf("DECLARATION\n"); }
+    | ASSIGN expr SEMICOLON 
+          { printf("DECLARATION WITH ATTRIBUTION\n"); }
+    | LPAREN parameter_list RPAREN context_bloc 
+          { printf("FUNCTION DECLARATION\n"); }
+    ;
 
-context_bloc:
-    LBRACE bloc_statement_list RBRACE
+/* Reaproveita as regras já existentes */
 
-attribution:
-    ID ASSIGN expr SEMICOLON { printf("\t \t \t     ID ASSIGN expression SEMICOLON \n \t \t \t  ATTRIBUTION: \n"); }
+type:
+    INT { printf("TYPE: INT\n"); }
+    | FLOAT { printf("TYPE: FLOAT\n"); }
+    | VOID { printf("TYPE: VOID\n"); }
+    ;
 
-declaration:
-    INT ID SEMICOLON { printf("\n\t \t \t    INT  ID  SEMICOLON \n \t \t \t   DECLARATION: \n"); }
-    | FLOAT ID SEMICOLON { printf("\n\t \t \t    FLOAT  ID  SEMICOLON \n \t \t \t   DECLARATION: \n"); }
+parameter_list:
+      /* empty */ { printf("NO PARAMETERS\n"); }
+    | parameter_declaration { printf("PARAMETER LIST\n"); }
+    | parameter_list COMMA parameter_declaration { printf("PARAMETER LIST\n"); }
+    ;
 
-declaration_with_attribution:
-    INT ID ASSIGN expr SEMICOLON { printf("\n\t \t \t    INT  ID  ASSIGN  expression SEMICOLON \n \t \t \t   DECLARATION_WITH_ATTRIBUTION: \n"); }
+parameter_declaration:
+    type ID { printf("PARAMETER: %s\n", $2); }
+    ;
 
+function_call:
+    ID LPAREN argument_list RPAREN { printf("FUNCTION CALL: %s\n", $1); }
+    ;
 
-condition_bloc:
-    LPAREN expression print_relop expression RPAREN { printf("\t\t\t   ( expr  RELOP  expr )     \n \t\t      IF_CONDITION:   \n\n \t\t     LBRACE \n"); }
+argument_list:
+      /* empty */ { printf("NO ARGUMENTS\n"); }
+    | expr { printf("ARGUMENT\n"); }
+    | argument_list COMMA expr { printf("ARGUMENT LIST\n"); }
+    ;
 
 jump_structure:
-    if_structure { printf("\t\t jump_statement \n"); }
-    | if_structure else_structure { printf("\t\t jump_statement \n"); }
+    if_structure { printf("JUMP STATEMENT\n"); }
+    | if_structure else_structure { printf("JUMP STATEMENT\n"); }
+    ;
 
 if_structure:
-    IF condition_bloc context_bloc { printf("\t\t     RBRACE \n \t\t   IF_STATEMENTS \n"); }
+    IF condition_bloc context_bloc { printf("IF STATEMENT\n"); }
+    ;
 
 else_structure:
-    ELSE context_bloc { printf("\t\t   ELSE_STATEMENTS \n"); }
+    ELSE context_bloc { printf("ELSE STATEMENT\n"); }
+    ;
 
+condition_bloc:
+    LPAREN expression print_relop expression RPAREN { printf("IF CONDITION\n"); }
+    ;
 
 expr:
-    expr PLUS expr      { printf("\t\t\t\t     expression = expr + expr  \n"); }
-    | expr MINUS expr   { printf("\t\t\t\t     expression = expr - expr  \n"); }
-    | expr MULT expr    { printf("\t\t\t\t     expression = expr * expr  \n"); }
-    | expr DIV expr     { printf("\t\t\t\t     expression = expr / expr  \n"); }
+    expr PLUS expr { printf("expression = expr + expr\n"); }
+    | expr MINUS expr { printf("expression = expr - expr\n"); }
+    | expr MULT expr { printf("expression = expr * expr\n"); }
+    | expr DIV expr { printf("expression = expr / expr\n"); }
     | expression
+    ;
 
 expression:
     print_id
     | print_num
+    ;
 
 print_id:
-    ID { printf("\t\t\t\t\t   expr = ID = %s \n", $1); }
+    ID { printf("expr = ID: %s\n", $1); }
+    ;
 
 print_num:
-    NUM { printf("\t\t\t\t\t   expr = NUM = %d \n", $1); }
+    NUM { printf("expr = NUM: %d\n", $1); }
+    ;
 
 print_relop:
-    RELOP { printf("\t\t\t\t\t   RELOP = %s \n", $1); }
+    RELOP { printf("RELOP: %s\n", $1); }
+    ;
+
+context_bloc:
+    LBRACE bloc_statement_list_opt RBRACE
+    ;
+
+bloc_statement_list_opt:
+      /* empty */
+    | bloc_statement_list
+    ;
+
+bloc_statement_list:
+    bloc_statement { printf("bloc_statement_list\n"); }
+    | bloc_statement_list bloc_statement { printf("bloc_statement_list\n"); }
+    ;
+
+bloc_statement:
+    decl_or_func    { printf("bloc_statement (declaration or function)\n"); }
+    | attribution   { printf("bloc_statement (attribution)\n"); }
+    | if_structure  { printf("bloc_statement (if)\n"); }
+    | return_statement { printf("bloc_statement (return)\n"); }
+    ;
+
+attribution:
+    ID ASSIGN expr SEMICOLON { printf("ATTRIBUTION\n"); }
+    ;
+
+return_statement:
+    RETURN expr SEMICOLON { printf("RETURN STATEMENT\n"); }
+    | RETURN SEMICOLON { printf("RETURN STATEMENT\n"); }
+    ;
 
 %%
 
 void yyerror(const char *s) {
-    fprintf(stderr, " Erro: %s\n", s);
+    fprintf(stderr, "Erro: %s\n", s);
 }
 
 int main() {

@@ -8,9 +8,11 @@
 [ \t\n]     { /* Ignora espaços em branco */ }
 "int"       { return INT; }
 "float"     { return FLOAT; }
+"void"      { return VOID; }
 "if"        { return IF; }
 "else"      { return ELSE; }
 "while"     { return WHILE; }
+"return"    { return RETURN; }
 "="         { return ASSIGN; }
 "+"         { return PLUS; }
 "-"         { return MINUS; }
@@ -27,6 +29,7 @@
 "!="        { yylval.relop = yytext; return RELOP; }
 "=="        { yylval.relop = yytext; return RELOP; }
 ";"         { return SEMICOLON; }
+","         { return COMMA; }
 [a-zA-Z]+   { yylval.strId = yytext; return ID; }
 .    { printf("\n Caracter(s) invalido(s). \n"); return ERROR; }
 

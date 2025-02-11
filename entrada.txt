@@ -1,4 +1,5 @@
-int x; 
-x=1;
-int z;
-z = x+x;
+int teste(int a, int b) {
+    int x = 2;
+    return x;
+}
+teste(5, 8);
