@@ -19,9 +19,11 @@ int yylex(void);
     char* relop;
     char* strId;
     int num;
+    float floatNum;
 }
 
 %token <num> NUM
+%token <floatNum> FLOAT_NUM
 %left PLUS MINUS
 %left MULT DIV
 %token INT FLOAT VOID IF ELSE WHILE RETURN
@@ -125,6 +127,7 @@ expr:
 expression:
     print_id
     | print_num
+    | print_float
     ;
 
 print_id:
@@ -138,6 +141,10 @@ print_num:
 
 print_relop:
     RELOP { print_indent(); printf("RELOP: %s\n", $1); }
+    ;
+
+print_float:
+    FLOAT_NUM { print_indent(); printf("expr = FLOAT_NUM: %.2f\n", $1); }
     ;
 
 context_bloc:

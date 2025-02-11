@@ -55,28 +55,29 @@ extern int yydebug;
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
     NUM = 258,                     /* NUM  */
-    PLUS = 259,                    /* PLUS  */
-    MINUS = 260,                   /* MINUS  */
-    MULT = 261,                    /* MULT  */
-    DIV = 262,                     /* DIV  */
-    INT = 263,                     /* INT  */
-    FLOAT = 264,                   /* FLOAT  */
-    VOID = 265,                    /* VOID  */
-    IF = 266,                      /* IF  */
-    ELSE = 267,                    /* ELSE  */
-    WHILE = 268,                   /* WHILE  */
-    RETURN = 269,                  /* RETURN  */
-    ASSIGN = 270,                  /* ASSIGN  */
-    LPAREN = 271,                  /* LPAREN  */
-    RPAREN = 272,                  /* RPAREN  */
-    LBRACE = 273,                  /* LBRACE  */
-    RBRACE = 274,                  /* RBRACE  */
-    SEMICOLON = 275,               /* SEMICOLON  */
-    COMMA = 276,                   /* COMMA  */
-    ID = 277,                      /* ID  */
-    RELOP = 278,                   /* RELOP  */
-    ARRAY_ID = 279,                /* ARRAY_ID  */
-    ERROR = 280                    /* ERROR  */
+    FLOAT_NUM = 259,               /* FLOAT_NUM  */
+    PLUS = 260,                    /* PLUS  */
+    MINUS = 261,                   /* MINUS  */
+    MULT = 262,                    /* MULT  */
+    DIV = 263,                     /* DIV  */
+    INT = 264,                     /* INT  */
+    FLOAT = 265,                   /* FLOAT  */
+    VOID = 266,                    /* VOID  */
+    IF = 267,                      /* IF  */
+    ELSE = 268,                    /* ELSE  */
+    WHILE = 269,                   /* WHILE  */
+    RETURN = 270,                  /* RETURN  */
+    ASSIGN = 271,                  /* ASSIGN  */
+    LPAREN = 272,                  /* LPAREN  */
+    RPAREN = 273,                  /* RPAREN  */
+    LBRACE = 274,                  /* LBRACE  */
+    RBRACE = 275,                  /* RBRACE  */
+    SEMICOLON = 276,               /* SEMICOLON  */
+    COMMA = 277,                   /* COMMA  */
+    ID = 278,                      /* ID  */
+    RELOP = 279,                   /* RELOP  */
+    ARRAY_ID = 280,                /* ARRAY_ID  */
+    ERROR = 281                    /* ERROR  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -90,8 +91,9 @@ union YYSTYPE
     char* relop;
     char* strId;
     int num;
+    float floatNum;
 
-#line 95 "parser.tab.h"
+#line 97 "parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
